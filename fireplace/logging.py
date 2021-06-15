@@ -1,7 +1,7 @@
 import logging
 
 
-def get_logger(name, level=logging.DEBUG):
+def get_logger(name, level=logging.ERROR):
 	logger = logging.getLogger(name)
 	logger.setLevel(level)
 

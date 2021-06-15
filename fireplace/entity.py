@@ -43,6 +43,7 @@ class BaseEntity(object):
 
 	def log(self, message, *args):
 		self.logger.info(message, *args)
+		pass
 
 	def get_actions(self, name):
 		actions = getattr(self.data.scripts, name)

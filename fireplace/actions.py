@@ -1339,7 +1339,7 @@ class CastSpell(TargetedAction):
 		player = source.controller
 		while player.choice:
 			choice = random.choice(player.choice.cards)
-			print("Choosing card %r" % (choice))
+			#print("Choosing card %r" % (choice))
 			player.choice.choose(choice)
 		source.game.queue_actions(source, [Deaths()])
 
@@ -1372,7 +1372,7 @@ class CastSpellTargetsEnemiesIfPossible(TargetedAction):
 		player = source.controller
 		while player.choice:
 			choice = random.choice(player.choice.cards)
-			print("Choosing card %r" % (choice))
+			#print("Choosing card %r" % (choice))
 			player.choice.choose(choice)
 		source.game.queue_actions(source, [Deaths()])
 

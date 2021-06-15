@@ -295,8 +295,10 @@ def play_turn(game):
 		if heropower.is_usable() and random.random() < 0.1:
 			if heropower.requires_target():
 				heropower.use(target=random.choice(heropower.targets))
+				game_state_to_csv(game)
 			else:
 				heropower.use()
+				game_state_to_csv(game)
 			continue
 
 		# iterate over our hand and play whatever is playable
@@ -307,13 +309,15 @@ def play_turn(game):
 					card = random.choice(card.choose_cards)
 				if card.requires_target():
 					target = random.choice(card.targets)
-				print("Playing %r on %r" % (card, target))
+				#print("Playing %r on %r" % (card, target))
 				card.play(target=target)
+				game_state_to_csv(game)
 
 				if player.choice:
 					choice = random.choice(player.choice.cards)
-					print("Choosing card %r" % (choice))
+					#print("Choosing card %r" % (choice))
 					player.choice.choose(choice)
+					game_state_to_csv(game)
 
 				continue
 
@@ -321,6 +325,7 @@ def play_turn(game):
 		for character in player.characters:
 			if character.can_attack():
 				character.attack(random.choice(character.targets))
+				game_state_to_csv(game)
 
 		break
 
@@ -332,7 +337,7 @@ def play_full_game():
 	game = setup_game()
 
 	for player in game.players:
-		print("Can mulligan %r" % (player.choice.cards))
+		#print("Can mulligan %r" % (player.choice.cards))
 		mull_count = random.randint(0, len(player.choice.cards))
 		cards_to_mulligan = random.sample(player.choice.cards, mull_count)
 		player.choice.choose(*cards_to_mulligan)
@@ -346,7 +351,7 @@ def play_random_game():
 	game = setup_random_game()
 
 	for player in game.players:
-		print("Can mulligan %r" % (player.choice.cards))
+		#print("Can mulligan %r" % (player.choice.cards))
 		mull_count = random.randint(0, len(player.choice.cards))
 		cards_to_mulligan = random.sample(player.choice.cards, mull_count)
 		player.choice.choose(*cards_to_mulligan)

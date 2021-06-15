@@ -13,7 +13,8 @@ def test_full_game():
 	try:
 		play_full_game()
 	except GameOver:
-		print("Game completed normally.")
+		pass
+		#print("Game completed normally.")
 
 
 def main():
