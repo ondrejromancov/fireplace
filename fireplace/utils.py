@@ -182,6 +182,23 @@ def setup_game():
 
 	return game
 
+def setup_random_game():
+	from .game import Game
+	from .player import Player
+
+	class1 = random_class()
+	class2 = random_class()
+
+	deck1 = random_draft(class1)
+	deck2 = random_draft(class2)
+	player1 = Player("Player1", deck1, class1.default_hero)
+	player2 = Player("Player2", deck2, class2.default_hero)
+
+	game = Game(players=(player1, player2))
+	game.start()
+
+	return game
+
 
 def play_turn(game):
 	player = game.current_player
@@ -226,6 +243,20 @@ def play_turn(game):
 
 def play_full_game():
 	game = setup_game()
+
+	for player in game.players:
+		print("Can mulligan %r" % (player.choice.cards))
+		mull_count = random.randint(0, len(player.choice.cards))
+		cards_to_mulligan = random.sample(player.choice.cards, mull_count)
+		player.choice.choose(*cards_to_mulligan)
+
+	while True:
+		play_turn(game)
+
+	return game
+
+def play_random_game():
+	game = setup_random_game()
 
 	for player in game.players:
 		print("Can mulligan %r" % (player.choice.cards))

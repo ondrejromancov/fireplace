@@ -179,12 +179,15 @@ class BaseGame(Entity):
 			if self.players[0].playstate == self.players[1].playstate:
 				for player in self.players:
 					player.playstate = PlayState.TIED
+					print("Player", player.hero, "has LOST")
 			else:
 				for player in self.players:
 					if player.playstate == PlayState.LOSING:
 						player.playstate = PlayState.LOST
+						print("Player", player.hero, "has LOST")
 					else:
 						player.playstate = PlayState.WON
+						print("Player", player.hero, "has WON")
 			self.state = State.COMPLETE
 			self.manager.step(self.next_step, Step.FINAL_WRAPUP)
 			self.manager.step(self.next_step, Step.FINAL_GAMEOVER)
