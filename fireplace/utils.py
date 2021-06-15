@@ -5,6 +5,7 @@ from importlib import import_module
 from pkgutil import iter_modules
 from typing import List
 from xml.etree import ElementTree
+import csv
 
 from hearthstone.enums import CardClass, CardType
 
@@ -136,6 +137,91 @@ def game_state_to_xml(game):
 
 	return ElementTree.tostring(tree)
 
+def game_state_to_csv(game):
+	from .card import Minion
+
+	with open('./game_states.csv', 'a', newline='') as csvfile:
+		csvwriter = csv.writer(csvfile, delimiter=',',
+								quotechar='|', quoting=csv.QUOTE_MINIMAL)
+		state = [
+			# Basic info
+			game.players[0].hero.data.card_class,
+			game.players[1].hero.data.card_class,
+			game.turn,
+			game.current_player.hero.data.card_class,
+			# Player 0
+			game.players[0].hero.health,
+			game.players[0].hero.armor,
+			game.players[0].fatigue_counter,
+			game.players[0].overloaded,
+			game.players[0].overload_locked,
+			game.players[0]._max_mana,
+			game.players[0].temp_mana,
+			game.players[0].used_mana,
+			game.players[0].weapon.atk if game.players[0].weapon !=None else 0,
+			game.players[0].weapon.durability if game.players[0].weapon !=None else 0,
+			game.players[0].weapon.immune_while_attacking if game.players[0].weapon !=None else 0,
+			game.players[0].weapon.incoming_damage_multiplier if game.players[0].weapon !=None else 0,
+			len(game.players[0].deck),
+			len(game.players[0].hand),
+			len(game.players[0].secrets),
+			# Player 1
+			game.players[1].hero.armor,
+			game.players[1].hero.health,
+			game.players[1].fatigue_counter,
+			game.players[1].overloaded,
+			game.players[1].overload_locked,
+			game.players[1]._max_mana,
+			game.players[1].temp_mana,
+			game.players[1].used_mana,
+			game.players[1].weapon.atk if game.players[1].weapon !=None else 0,
+			game.players[1].weapon.durability if game.players[1].weapon !=None else 0,
+			game.players[1].weapon.immune_while_attacking if game.players[1].weapon !=None else False,
+			game.players[1].weapon.incoming_damage_multiplier if game.players[1].weapon !=None else False,
+			len(game.players[1].deck),
+			len(game.players[1].hand),
+			len(game.players[1].secrets),
+		]
+
+		for player in game.players:
+			for i in range(game.MAX_MINIONS_ON_FIELD):
+				field = player.field
+				if len(field) > i:
+					minion = field.__getitem__(i) 
+				else:
+					minion = None 
+				
+				if isinstance(minion, Minion):
+					# Integer values
+					state.append(minion.atk)
+					state.append(minion.max_health)
+					state.append(minion.damage)
+					state.append(minion.incoming_damage_multiplier)
+					state.append(minion.spellpower)
+					state.append(minion.max_attacks)
+					state.append(minion.dormant)
+
+					# Boolean values
+					state.append(minion.attackable)
+					state.append(minion.immune_while_attacking)
+					state.append(minion.cant_attack)
+					state.append(minion.exhausted)
+					state.append(minion.frozen)
+					state.append(minion.cant_be_targeted_by_opponents)
+					state.append(minion.cant_be_targeted_by_abilities)
+					state.append(minion.cant_be_targeted_by_hero_powers)
+					state.append(minion.heavily_armored)
+					state.append(minion.rush)
+					state.append(minion.taunt)
+					state.append(minion.poisonous)
+					state.append(minion.charge)
+					state.append(minion.stealthed)
+					state.append(minion.ignore_taunt)
+				else:
+					state.extend([0] * 7 + [False] * 15)
+
+		csvwriter.writerow(state)
+
 
 def weighted_card_choice(source, weights: List[int], card_sets: List[str], count: int):
 	"""
@@ -201,6 +287,7 @@ def setup_random_game():
 
 
 def play_turn(game):
+	game_state_to_csv(game)
 	player = game.current_player
 
 	while True:
