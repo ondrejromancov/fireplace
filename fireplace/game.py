@@ -33,7 +33,7 @@ class BaseGame(Entity):
 		self.active_aura_buffs = CardList()
 		self.setaside = CardList()
 		self._action_stack = 0
-		self.game_states - list()
+		self.game_states = list()
 
 	def __repr__(self):
 		return "%s(players=%r)" % (self.__class__.__name__, self.players)
