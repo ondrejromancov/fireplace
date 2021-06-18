@@ -161,8 +161,8 @@ def game_state_to_csv(game):
             game.players[0].used_mana,
             game.players[0].weapon.atk if game.players[0].weapon != None else 0,
             game.players[0].weapon.durability if game.players[0].weapon != None else 0,
-            game.players[0].weapon.immune_while_attacking if game.players[0].weapon != None else 0,
-            game.players[0].weapon.incoming_damage_multiplier if game.players[0].weapon != None else 0,
+            game.players[0].weapon.immune_while_attacking if game.players[0].weapon != None else False,
+            game.players[0].weapon.incoming_damage_multiplier if game.players[0].weapon != None else False,
             len(game.players[0].deck),
             len(game.players[0].hand),
             len(game.players[0].secrets),
@@ -289,7 +289,6 @@ def setup_random_game():
 
 
 def play_turn(game):
-    game_state_to_csv(game)
     player = game.current_player
 
     while True:
@@ -297,10 +296,8 @@ def play_turn(game):
         if heropower.is_usable() and random.random() < 0.1:
             if heropower.requires_target():
                 heropower.use(target=random.choice(heropower.targets))
-                game_state_to_csv(game)
             else:
                 heropower.use()
-                game_state_to_csv(game)
             continue
 
         # iterate over our hand and play whatever is playable
@@ -313,22 +310,17 @@ def play_turn(game):
                     target = random.choice(card.targets)
                 #print("Playing %r on %r" % (card, target))
                 card.play(target=target)
-                game_state_to_csv(game)
 
                 if player.choice:
                     choice = random.choice(player.choice.cards)
                     #print("Choosing card %r" % (choice))
                     player.choice.choose(choice)
-                    game_state_to_csv(game)
-
                 continue
 
         # Randomly attack with whatever can attack
         for character in player.characters:
             if character.can_attack():
                 character.attack(random.choice(character.targets))
-                game_state_to_csv(game)
-
         break
 
     game.end_turn()
