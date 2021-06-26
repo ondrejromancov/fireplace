@@ -138,7 +138,7 @@ def game_state_to_xml(game):
     return ElementTree.tostring(tree)
 
 
-def game_state_to_csv_row(game):
+def capture_game_state(game):
     from .card import Minion
 
     state = [
@@ -218,7 +218,7 @@ def game_state_to_csv_row(game):
             else:
                 state.extend([0] * 7 + [False] * 15)
 
-    game.game_states.append(state)
+    return state
 
 def weighted_card_choice(source, weights: List[int], card_sets: List[str], count: int):
     """
