@@ -141,47 +141,47 @@ def game_state_to_xml(game):
 def capture_game_state(game):
     from .card import Minion
 
-    state = [
+    state = {
         # Basic info
-        game.players[0].hero.data.card_class,
-        game.players[1].hero.data.card_class,
-        game.turn,
-        game.current_player.hero.data.card_class,
+        'player1': game.players[0].hero.data.card_class,
+        'player0': game.players[1].hero.data.card_class,
+        'turn': game.turn,
+        'current_player': game.current_player.hero.data.card_class,
         # Player 0
-        game.players[0].hero.health,
-        game.players[0].hero.armor,
-        game.players[0].fatigue_counter,
-        game.players[0].overloaded,
-        game.players[0].overload_locked,
-        game.players[0]._max_mana,
-        game.players[0].temp_mana,
-        game.players[0].used_mana,
-        game.players[0].weapon.atk if game.players[0].weapon != None else 0,
-        game.players[0].weapon.durability if game.players[0].weapon != None else 0,
-        game.players[0].weapon.immune_while_attacking if game.players[0].weapon != None else False,
-        game.players[0].weapon.incoming_damage_multiplier if game.players[0].weapon != None else False,
-        len(game.players[0].deck),
-        len(game.players[0].hand),
-        len(game.players[0].secrets),
+        'player1_health': game.players[0].hero.health,
+        'player1_armor': game.players[0].hero.armor,
+        'player1_fatique_counter': game.players[0].fatigue_counter,
+        'player1_overloaded': game.players[0].overloaded,
+        'player1_overload_locked': game.players[0].overload_locked,
+        'player1_max_mana': game.players[0]._max_mana,
+        'player1_temp_mana': game.players[0].temp_mana,
+        'player1_used_mana': game.players[0].used_mana,
+        'player1_weapon_atk': game.players[0].weapon.atk if game.players[0].weapon != None else 0,
+        'player1_weapon_durability': game.players[0].weapon.durability if game.players[0].weapon != None else 0,
+        'player1_weapon_immune_while_attacking': game.players[0].weapon.immune_while_attacking if game.players[0].weapon != None else False,
+        'player1_weapon_incoming_damage_multiplier': game.players[0].weapon.incoming_damage_multiplier if game.players[0].weapon != None else False,
+        'player1_deck_size': len(game.players[0].deck),
+        'player1_hand_size': len(game.players[0].hand),
+        'player1_secrets': len(game.players[0].secrets),
         # Player 1
-        game.players[1].hero.armor,
-        game.players[1].hero.health,
-        game.players[1].fatigue_counter,
-        game.players[1].overloaded,
-        game.players[1].overload_locked,
-        game.players[1]._max_mana,
-        game.players[1].temp_mana,
-        game.players[1].used_mana,
-        game.players[1].weapon.atk if game.players[1].weapon != None else 0,
-        game.players[1].weapon.durability if game.players[1].weapon != None else 0,
-        game.players[1].weapon.immune_while_attacking if game.players[1].weapon != None else False,
-        game.players[1].weapon.incoming_damage_multiplier if game.players[1].weapon != None else False,
-        len(game.players[1].deck),
-        len(game.players[1].hand),
-        len(game.players[1].secrets),
-    ]
+        'player0_armor': game.players[1].hero.armor,
+        'player0_health': game.players[1].hero.health,
+        'player0_fatique_counter': game.players[1].fatigue_counter,
+        'player0_overloaded': game.players[1].overloaded,
+        'player0_overload_locked': game.players[1].overload_locked,
+        'player0_max_mana': game.players[1]._max_mana,
+        'player0_temp_mana': game.players[1].temp_mana,
+        'player0_used_mana': game.players[1].used_mana,
+        'player0_weapon_atk': game.players[1].weapon.atk if game.players[1].weapon != None else 0,
+        'player0_weapon_durability': game.players[1].weapon.durability if game.players[1].weapon != None else 0,
+        'player0_weapon_immune_while_attacking': game.players[1].weapon.immune_while_attacking if game.players[1].weapon != None else False,
+        'player0_weapon_incoming_damage_multiplier': game.players[1].weapon.incoming_damage_multiplier if game.players[1].weapon != None else False,
+        'player0_deck_size': len(game.players[1].deck),
+        'player0_hand_size': len(game.players[1].hand),
+        'player0_secrets': len(game.players[1].secrets),
+    }
 
-    for player in game.players:
+    for p_index, player in enumerate(game.players):
         for i in range(game.MAX_MINIONS_ON_FIELD):
             field = player.field
             if len(field) > i:
@@ -191,32 +191,55 @@ def capture_game_state(game):
 
             if isinstance(minion, Minion):
                 # Integer values
-                state.append(minion.atk)
-                state.append(minion.max_health)
-                state.append(minion.damage)
-                state.append(minion.incoming_damage_multiplier)
-                state.append(minion.spellpower)
-                state.append(minion.max_attacks)
-                state.append(minion.dormant)
+                state[('player' + str(p_index) + '_minion' + str(i) + '_atk')] = minion.atk
+                state[('player' + str(p_index) + '_minion' + str(i) + '_max_health')] = minion.max_health
+                state[('player' + str(p_index) + '_minion' + str(i) + '_damage')] = minion.damage
+                state[('player' + str(p_index) + '_minion' + str(i) + '_incoming_damage_multiplier')] = minion.incoming_damage_multiplier
+                state[('player' + str(p_index) + '_minion' + str(i) + '_spellpower')] = minion.spellpower
+                state[('player' + str(p_index) + '_minion' + str(i) + '_max_attacks')] = minion.max_attacks
+                state[('player' + str(p_index) + '_minion' + str(i) + '_dormant')] = minion.dormant
 
                 # Boolean values
-                state.append(minion.attackable)
-                state.append(minion.immune_while_attacking)
-                state.append(minion.cant_attack)
-                state.append(minion.exhausted)
-                state.append(minion.frozen)
-                state.append(minion.cant_be_targeted_by_opponents)
-                state.append(minion.cant_be_targeted_by_abilities)
-                state.append(minion.cant_be_targeted_by_hero_powers)
-                state.append(minion.heavily_armored)
-                state.append(minion.rush)
-                state.append(minion.taunt)
-                state.append(minion.poisonous)
-                state.append(minion.charge)
-                state.append(minion.stealthed)
-                state.append(minion.ignore_taunt)
+                state[('player' + str(p_index) + '_minion' + str(i) + '_attackable')] = minion.attackable
+                state[('player' + str(p_index) + '_minion' + str(i) + '_immune_while_attacking')] = minion.immune_while_attacking
+                state[('player' + str(p_index) + '_minion' + str(i) + '_cant_attack')] = minion.cant_attack
+                state[('player' + str(p_index) + '_minion' + str(i) + '_exhausted')] = minion.exhausted
+                state[('player' + str(p_index) + '_minion' + str(i) + '_frozen')] = minion.frozen
+                state[('player' + str(p_index) + '_minion' + str(i) + '_cant_be_targeted_by_opponents')] = minion.cant_be_targeted_by_opponents
+                state[('player' + str(p_index) + '_minion' + str(i) + '_cant_be_targeted_by_abilities')] = minion.cant_be_targeted_by_abilities
+                state[('player' + str(p_index) + '_minion' + str(i) + '_cant_be_targeted_by_hero_powers')] = minion.cant_be_targeted_by_hero_powers
+                state[('player' + str(p_index) + '_minion' + str(i) + '_heavily_armored')] = minion.heavily_armored
+                state[('player' + str(p_index) + '_minion' + str(i) + '_rush')] = minion.rush
+                state[('player' + str(p_index) + '_minion' + str(i) + '_taunt')] = minion.taunt
+                state[('player' + str(p_index) + '_minion' + str(i) + '_poisonous')] = minion.poisonous
+                state[('player' + str(p_index) + '_minion' + str(i) + '_charge')] = minion.charge
+                state[('player' + str(p_index) + '_minion' + str(i) + '_stealthed')] = minion.stealthed
+                state[('player' + str(p_index) + '_minion' + str(i) + '_ignore_taunt')] = minion.ignore_taunt
             else:
-                state.extend([0] * 7 + [False] * 15)
+                state[('player' + str(p_index) + '_minion' + str(i) + '_atk')] = 0
+                state[('player' + str(p_index) + '_minion' + str(i) + '_max_health')] = 0
+                state[('player' + str(p_index) + '_minion' + str(i) + '_damage')] = 0
+                state[('player' + str(p_index) + '_minion' + str(i) + '_incoming_damage_multiplier')] = 0
+                state[('player' + str(p_index) + '_minion' + str(i) + '_spellpower')] = 0
+                state[('player' + str(p_index) + '_minion' + str(i) + '_max_attacks')] = 0
+                state[('player' + str(p_index) + '_minion' + str(i) + '_dormant')] = 0
+
+                # Boolean values
+                state[('player' + str(p_index) + '_minion' + str(i) + '_attackable')] = False
+                state[('player' + str(p_index) + '_minion' + str(i) + '_immune_while_attacking')] = False
+                state[('player' + str(p_index) + '_minion' + str(i) + '_cant_attack')] = False
+                state[('player' + str(p_index) + '_minion' + str(i) + '_exhausted')] = False
+                state[('player' + str(p_index) + '_minion' + str(i) + '_frozen')] = False
+                state[('player' + str(p_index) + '_minion' + str(i) + '_cant_be_targeted_by_opponents')] = False
+                state[('player' + str(p_index) + '_minion' + str(i) + '_cant_be_targeted_by_abilities')] = False
+                state[('player' + str(p_index) + '_minion' + str(i) + '_cant_be_targeted_by_hero_powers')] = False
+                state[('player' + str(p_index) + '_minion' + str(i) + '_heavily_armored')] = False
+                state[('player' + str(p_index) + '_minion' + str(i) + '_rush')] = False
+                state[('player' + str(p_index) + '_minion' + str(i) + '_taunt')] = False
+                state[('player' + str(p_index) + '_minion' + str(i) + '_poisonous')] = False
+                state[('player' + str(p_index) + '_minion' + str(i) + '_charge')] = False
+                state[('player' + str(p_index) + '_minion' + str(i) + '_stealthed')] = False
+                state[('player' + str(p_index) + '_minion' + str(i) + '_ignore_taunt')] = False
 
     return state
 
