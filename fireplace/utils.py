@@ -143,10 +143,10 @@ def capture_game_state(game):
 
     state = {
         # Basic info
-        'player1': game.players[0].hero.data.card_class,
-        'player0': game.players[1].hero.data.card_class,
+        'player1': str(game.players[0].hero.data.card_class),
+        'player0': str(game.players[1].hero.data.card_class),
         'turn': game.turn,
-        'current_player': game.current_player.hero.data.card_class,
+        'current_player': str(game.current_player.hero.data.card_class),
         # Player 0
         'player1_health': game.players[0].hero.health,
         'player1_armor': game.players[0].hero.armor,
