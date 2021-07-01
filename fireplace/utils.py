@@ -181,7 +181,7 @@ def capture_game_state(game):
         'player0_secrets': len(game.players[1].secrets),
     }
 
-    for p_index, player in enumerate(game.players):
+    for p_index, player in enumerate(game.players, start=1):
         for i in range(game.MAX_MINIONS_ON_FIELD):
             field = player.field
             if len(field) > i:
