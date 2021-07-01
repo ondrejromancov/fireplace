@@ -181,7 +181,7 @@ def capture_game_state(game):
         'player0_secrets': len(game.players[1].secrets),
     }
 
-    for p_index, player in enumerate(game.players, start=1):
+    for p_index, player in enumerate(game.players):
         for i in range(game.MAX_MINIONS_ON_FIELD):
             field = player.field
             if len(field) > i:
@@ -191,55 +191,55 @@ def capture_game_state(game):
 
             if isinstance(minion, Minion):
                 # Integer values
-                state[('player' + str(p_index) + '_minion' + str(i) + '_atk')] = minion.atk
-                state[('player' + str(p_index) + '_minion' + str(i) + '_max_health')] = minion.max_health
-                state[('player' + str(p_index) + '_minion' + str(i) + '_damage')] = minion.damage
-                state[('player' + str(p_index) + '_minion' + str(i) + '_incoming_damage_multiplier')] = minion.incoming_damage_multiplier
-                state[('player' + str(p_index) + '_minion' + str(i) + '_spellpower')] = minion.spellpower
-                state[('player' + str(p_index) + '_minion' + str(i) + '_max_attacks')] = minion.max_attacks
-                state[('player' + str(p_index) + '_minion' + str(i) + '_dormant')] = minion.dormant
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_atk')] = minion.atk
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_max_health')] = minion.max_health
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_damage')] = minion.damage
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_incoming_damage_multiplier')] = minion.incoming_damage_multiplier
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_spellpower')] = minion.spellpower
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_max_attacks')] = minion.max_attacks
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_dormant')] = minion.dormant
 
                 # Boolean values
-                state[('player' + str(p_index) + '_minion' + str(i) + '_attackable')] = minion.attackable
-                state[('player' + str(p_index) + '_minion' + str(i) + '_immune_while_attacking')] = minion.immune_while_attacking
-                state[('player' + str(p_index) + '_minion' + str(i) + '_cant_attack')] = minion.cant_attack
-                state[('player' + str(p_index) + '_minion' + str(i) + '_exhausted')] = minion.exhausted
-                state[('player' + str(p_index) + '_minion' + str(i) + '_frozen')] = minion.frozen
-                state[('player' + str(p_index) + '_minion' + str(i) + '_cant_be_targeted_by_opponents')] = minion.cant_be_targeted_by_opponents
-                state[('player' + str(p_index) + '_minion' + str(i) + '_cant_be_targeted_by_abilities')] = minion.cant_be_targeted_by_abilities
-                state[('player' + str(p_index) + '_minion' + str(i) + '_cant_be_targeted_by_hero_powers')] = minion.cant_be_targeted_by_hero_powers
-                state[('player' + str(p_index) + '_minion' + str(i) + '_heavily_armored')] = minion.heavily_armored
-                state[('player' + str(p_index) + '_minion' + str(i) + '_rush')] = minion.rush
-                state[('player' + str(p_index) + '_minion' + str(i) + '_taunt')] = minion.taunt
-                state[('player' + str(p_index) + '_minion' + str(i) + '_poisonous')] = minion.poisonous
-                state[('player' + str(p_index) + '_minion' + str(i) + '_charge')] = minion.charge
-                state[('player' + str(p_index) + '_minion' + str(i) + '_stealthed')] = minion.stealthed
-                state[('player' + str(p_index) + '_minion' + str(i) + '_ignore_taunt')] = minion.ignore_taunt
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_attackable')] = minion.attackable
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_immune_while_attacking')] = minion.immune_while_attacking
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_cant_attack')] = minion.cant_attack
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_exhausted')] = minion.exhausted
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_frozen')] = minion.frozen
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_cant_be_targeted_by_opponents')] = minion.cant_be_targeted_by_opponents
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_cant_be_targeted_by_abilities')] = minion.cant_be_targeted_by_abilities
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_cant_be_targeted_by_hero_powers')] = minion.cant_be_targeted_by_hero_powers
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_heavily_armored')] = minion.heavily_armored
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_rush')] = minion.rush
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_taunt')] = minion.taunt
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_poisonous')] = minion.poisonous
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_charge')] = minion.charge
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_stealthed')] = minion.stealthed
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_ignore_taunt')] = minion.ignore_taunt
             else:
-                state[('player' + str(p_index) + '_minion' + str(i) + '_atk')] = 0
-                state[('player' + str(p_index) + '_minion' + str(i) + '_max_health')] = 0
-                state[('player' + str(p_index) + '_minion' + str(i) + '_damage')] = 0
-                state[('player' + str(p_index) + '_minion' + str(i) + '_incoming_damage_multiplier')] = 0
-                state[('player' + str(p_index) + '_minion' + str(i) + '_spellpower')] = 0
-                state[('player' + str(p_index) + '_minion' + str(i) + '_max_attacks')] = 0
-                state[('player' + str(p_index) + '_minion' + str(i) + '_dormant')] = 0
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_atk')] = 0
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_max_health')] = 0
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_damage')] = 0
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_incoming_damage_multiplier')] = 0
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_spellpower')] = 0
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_max_attacks')] = 0
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_dormant')] = 0
 
                 # Boolean values
-                state[('player' + str(p_index) + '_minion' + str(i) + '_attackable')] = False
-                state[('player' + str(p_index) + '_minion' + str(i) + '_immune_while_attacking')] = False
-                state[('player' + str(p_index) + '_minion' + str(i) + '_cant_attack')] = False
-                state[('player' + str(p_index) + '_minion' + str(i) + '_exhausted')] = False
-                state[('player' + str(p_index) + '_minion' + str(i) + '_frozen')] = False
-                state[('player' + str(p_index) + '_minion' + str(i) + '_cant_be_targeted_by_opponents')] = False
-                state[('player' + str(p_index) + '_minion' + str(i) + '_cant_be_targeted_by_abilities')] = False
-                state[('player' + str(p_index) + '_minion' + str(i) + '_cant_be_targeted_by_hero_powers')] = False
-                state[('player' + str(p_index) + '_minion' + str(i) + '_heavily_armored')] = False
-                state[('player' + str(p_index) + '_minion' + str(i) + '_rush')] = False
-                state[('player' + str(p_index) + '_minion' + str(i) + '_taunt')] = False
-                state[('player' + str(p_index) + '_minion' + str(i) + '_poisonous')] = False
-                state[('player' + str(p_index) + '_minion' + str(i) + '_charge')] = False
-                state[('player' + str(p_index) + '_minion' + str(i) + '_stealthed')] = False
-                state[('player' + str(p_index) + '_minion' + str(i) + '_ignore_taunt')] = False
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_attackable')] = False
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_immune_while_attacking')] = False
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_cant_attack')] = False
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_exhausted')] = False
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_frozen')] = False
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_cant_be_targeted_by_opponents')] = False
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_cant_be_targeted_by_abilities')] = False
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_cant_be_targeted_by_hero_powers')] = False
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_heavily_armored')] = False
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_rush')] = False
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_taunt')] = False
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_poisonous')] = False
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_charge')] = False
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_stealthed')] = False
+                state[('player' + str(p_index) + '_minion' + str(i+1) + '_ignore_taunt')] = False
 
     return state
 
