@@ -101,15 +101,8 @@ class CardDB(dict):
 			self[id] = self.merge(id, card)
 
 		for id, card in load().items():
-			print(type(id))
-			print(id, card, sep=" ")
-			print("Atk: ", card.atk)
-			print("Health: ",card.health)
-			print("Collectible: ",card.collectible)
-
 			self[id] = self.merge(id, card)
 
-		print("Merged cards: ", len(self))
 		log.info("Merged %i cards", len(self))
 
 	def filter(self, **kwargs):

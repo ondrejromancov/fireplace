@@ -96,6 +96,42 @@ def random_draft(card_class: CardClass, exclude=[]):
 
     return deck
 
+def random_draft_with_included(card_class: CardClass, included):
+    """
+    Return a deck with specific cards and the rest filled in randomly
+    """
+    from . import cards
+    from .deck import Deck
+
+    deck = []
+    collection = []
+
+    # Construct a collection of valid cards
+    for card in cards.db.keys():
+        cls = cards.db[card]
+        if not cls.collectible:
+            continue
+        if cls.type == CardType.HERO:
+            # Heroes are collectible...
+            continue
+        if cls.card_class and cls.card_class not in [card_class, CardClass.NEUTRAL]:
+            # Play with more possibilities
+            continue
+        collection.append(cls)
+
+    # Add included cards
+    for id in included:
+        card = cards.db[id]
+        deck.append(card.id)
+
+    # Fill in rest with random cards
+    while len(deck) < Deck.MAX_CARDS:
+        card = random.choice(collection)
+        if deck.count(card.id) < card.max_count_in_deck:
+            deck.append(card.id)
+
+    return deck
+
 
 def random_class():
     return CardClass(random.randint(2, 10))
@@ -289,7 +325,39 @@ def setup_game():
 
     return game
 
+def setup_game_with_cards(player_class1: CardClass, player_class2: CardClass, cards1, cards2):
+    """
+    Setup a game between two players with decks including specific cards
+    """
+
+    from .game import Game
+    from .player import Player
+
+    deck1 = random_draft_with_included(player_class1, cards1)
+    deck2 = random_draft_with_included(player_class2, cards2)
+    player1 = Player("Player1", deck1, player_class1.default_hero)
+    player2 = Player("Player2", deck2, player_class2.default_hero)
+
+    print("Deck 1")
+    for card in deck1:
+        print(card, end=" ")
+
+    print()
+
+    print("Deck 2")
+    for card in deck2:
+        print(card, end=" ")
+
+    game = Game(players=(player1, player2))
+    game.start()
+
+    return game
+
 def setup_random_game():
+    """
+    Setup a game with two random players
+    """
+
     from .game import Game
     from .player import Player
 
