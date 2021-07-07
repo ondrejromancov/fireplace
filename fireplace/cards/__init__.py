@@ -4,6 +4,7 @@ from hearthstone import cardxml
 from hearthstone.enums import CardType
 from ..logging import log
 from ..utils import get_script_definition
+from generator.loader import load
 
 
 class CardDB(dict):
@@ -99,6 +100,16 @@ class CardDB(dict):
 		for id, card in db.items():
 			self[id] = self.merge(id, card)
 
+		for id, card in load().items():
+			print(type(id))
+			print(id, card, sep=" ")
+			print("Atk: ", card.atk)
+			print("Health: ",card.health)
+			print("Collectible: ",card.collectible)
+
+			self[id] = self.merge(id, card)
+
+		print("Merged cards: ", len(self))
 		log.info("Merged %i cards", len(self))
 
 	def filter(self, **kwargs):
